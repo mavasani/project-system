@@ -49,7 +49,7 @@
              Properties="$(CommonMSBuildGlobalProperties)"
              />
   </Target>
-  
+
   <Target Name="BuildVsInsertionNuget">
 
     <Message Text="Building %(NugetPackageFile.Filename)" Importance="high" />
