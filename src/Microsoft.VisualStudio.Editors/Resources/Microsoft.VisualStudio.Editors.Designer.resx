@@ -135,6 +135,9 @@
   <data name="PPG_ApplicationTitle" xml:space="preserve">
     <value>Application</value>
   </data>
+  <data name="PPG_PackageTitle" xml:space="preserve">
+    <value>Package</value>
+  </data>
   <data name="PPG_CompileTitle" xml:space="preserve">
     <value>Compile</value>
   </data>

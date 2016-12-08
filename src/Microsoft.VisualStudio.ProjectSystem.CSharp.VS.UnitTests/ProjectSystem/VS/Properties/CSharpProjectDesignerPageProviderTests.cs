@@ -28,9 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.Same(pages.ElementAt(0), CSharpProjectDesignerPage.Application);
             Assert.Same(pages.ElementAt(1), CSharpProjectDesignerPage.Build);
             Assert.Same(pages.ElementAt(2), CSharpProjectDesignerPage.BuildEvents);
-            Assert.Same(pages.ElementAt(3), CSharpProjectDesignerPage.Debug);
-            Assert.Same(pages.ElementAt(4), CSharpProjectDesignerPage.ReferencePaths);
-            Assert.Same(pages.ElementAt(5), CSharpProjectDesignerPage.Signing);
+            Assert.Same(pages.ElementAt(3), CSharpProjectDesignerPage.Package);
+            Assert.Same(pages.ElementAt(4), CSharpProjectDesignerPage.Debug);
+            Assert.Same(pages.ElementAt(5), CSharpProjectDesignerPage.ReferencePaths);
+            Assert.Same(pages.ElementAt(6), CSharpProjectDesignerPage.Signing);
         }
 
         private static CSharpProjectDesignerPageProvider CreateInstance()

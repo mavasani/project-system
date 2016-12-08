@@ -1364,7 +1364,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PPG_OutputPathNotSecure", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to Package.
+        '''</summary>
+        Friend Shared ReadOnly Property PPG_PackageTitle() As String
+            Get
+                Return ResourceManager.GetString("PPG_PackageTitle", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to Post-build Event Command Line.
         '''</summary>
