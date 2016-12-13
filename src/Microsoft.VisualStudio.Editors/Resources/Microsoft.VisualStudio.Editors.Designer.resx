@@ -798,6 +798,9 @@ Error:</value>
   <data name="PPG_Property_AssemblyFileVersion" xml:space="preserve">
     <value>Assembly File Version</value>
   </data>
+  <data name="PPG_Property_PackageVersion" xml:space="preserve">
+    <value>Package Version</value>
+  </data>
   <data name="PPG_Property_AssemblyGuid" xml:space="preserve">
     <value>Assembly GUID</value>
   </data>
