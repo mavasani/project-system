@@ -41,11 +41,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.Same(pages.ElementAt(3), VisualBasicProjectDesignerPage.Debug);
         }
 
+        [Fact]
+        public async Task GetPagesAsync_WithCodeAnalysisCapability()
+        {
+            var provider = CreateInstance(ProjectCapability.CodeAnalysis);
+            var pages = await provider.GetPagesAsync();
+
+            Assert.Equal(pages.Count(), 4);
+            Assert.Same(pages.ElementAt(0), VisualBasicProjectDesignerPage.Application);
+            Assert.Same(pages.ElementAt(1), VisualBasicProjectDesignerPage.References);
+            Assert.Same(pages.ElementAt(2), VisualBasicProjectDesignerPage.Debug);
+            Assert.Same(pages.ElementAt(3), VisualBasicProjectDesignerPage.CodeAnalysis);
+        }
+
         private static VisualBasicProjectDesignerPageProvider CreateInstance(params string[] capabilities)
         {
             Func<string, bool> containsCapability = c => capabilities.Contains(c);
             var capabilitiesService = IProjectCapabilitiesServiceFactory.ImplementsContains(containsCapability);
-            return new VisualBasicProjectDesignerPageProvider(capabilitiesService);
+            return new VisualBasicProjectDesignerPageProvider(IProjectThreadingServiceFactory.Create(), SVsServiceProviderFactory.Create(), capabilitiesService);
         }
     }
 }

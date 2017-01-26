@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -12,17 +13,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     /// </summary>
     [Export(typeof(IVsProjectDesignerPageProvider))]
     [AppliesTo(ProjectCapability.CSharp)]
-    internal class CSharpProjectDesignerPageProvider : IVsProjectDesignerPageProvider
+    internal class CSharpProjectDesignerPageProvider : AbstractProjectDesignerPageProvider
     {
-        private readonly IProjectCapabilitiesService _capabilities;
-
         [ImportingConstructor]
-        internal CSharpProjectDesignerPageProvider(IProjectCapabilitiesService capabilities)
+        internal CSharpProjectDesignerPageProvider(IProjectThreadingService threadingService, SVsServiceProvider serviceProvider, IProjectCapabilitiesService capabilities)
+            : base (threadingService, serviceProvider, capabilities)
         {
-            _capabilities = capabilities;
         }
 
-        public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
+        public async override Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
             var builder = ImmutableArray.CreateBuilder<IPageMetadata>();
 
@@ -30,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             builder.Add(CSharpProjectDesignerPage.Build);
             builder.Add(CSharpProjectDesignerPage.BuildEvents);
 
-            if (_capabilities.Contains(ProjectCapability.Pack))
+            if (IsPackEnabled)
             {
                 builder.Add(CSharpProjectDesignerPage.Package);
             }
@@ -39,7 +38,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             builder.Add(CSharpProjectDesignerPage.ReferencePaths);
             builder.Add(CSharpProjectDesignerPage.Signing);
 
-            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());
+            if (await IsCodeAnalysisEnabledAsync().ConfigureAwait(false))
+            {
+                builder.Add(CSharpProjectDesignerPage.CodeAnalysis);
+            }
+
+            return builder.ToImmutable();
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Microsoft.VisualStudio.Packaging
                                                   ProjectCapability.OpenProjectFile + "; " +
                                                   ProjectCapability.PreserveFormatting;
 
+        public const string CodeAnalysisPackageGuid = "B20604B0-72BC-4953-BB92-95BF26D30CFA";
+
         public ManagedProjectSystemPackage()
         {
         }

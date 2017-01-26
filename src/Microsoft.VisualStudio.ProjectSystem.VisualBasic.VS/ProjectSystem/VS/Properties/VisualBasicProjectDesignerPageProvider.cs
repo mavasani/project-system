@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -12,22 +13,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
     /// </summary>
     [Export(typeof(IVsProjectDesignerPageProvider))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class VisualBasicProjectDesignerPageProvider : IVsProjectDesignerPageProvider
+    internal class VisualBasicProjectDesignerPageProvider : AbstractProjectDesignerPageProvider
     {
-        private readonly IProjectCapabilitiesService _capabilities;
-
         [ImportingConstructor]
-        internal VisualBasicProjectDesignerPageProvider(IProjectCapabilitiesService capabilities)
+        internal VisualBasicProjectDesignerPageProvider(IProjectThreadingService threadingService, SVsServiceProvider serviceProvider, IProjectCapabilitiesService capabilities)
+            : base(threadingService, serviceProvider, capabilities)
         {
-            _capabilities = capabilities;
         }
 
-        public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
+        public async override Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
             var builder = ImmutableArray.CreateBuilder<IPageMetadata>();
             builder.Add(VisualBasicProjectDesignerPage.Application);
 
-            if (_capabilities.Contains(ProjectCapability.Pack))
+            if (IsPackEnabled)
             {
                 builder.Add(VisualBasicProjectDesignerPage.Package);
             }
@@ -35,7 +34,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             builder.Add(VisualBasicProjectDesignerPage.References);
             builder.Add(VisualBasicProjectDesignerPage.Debug);
 
-            return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutable());
+            if (await IsCodeAnalysisEnabledAsync().ConfigureAwait(false))
+            {
+                builder.Add(VisualBasicProjectDesignerPage.CodeAnalysis);
+            }
+
+            return builder.ToImmutable();
         }
     }
 }
