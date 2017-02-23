@@ -65,9 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             ProjectServices.ThreadingService.JoinableTaskFactory.Run(async () =>
             {
-                await ProjectServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
+                await InitializeAsync().ConfigureAwait(false);
 
-                await InitializeAsync().ConfigureAwait(true);
+                await ProjectServices.ThreadingService.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var priority = new VSDOCUMENTPRIORITY[1];
                 HResult result = ProjectServices.VsProject.IsDocumentInProject(filePath, 

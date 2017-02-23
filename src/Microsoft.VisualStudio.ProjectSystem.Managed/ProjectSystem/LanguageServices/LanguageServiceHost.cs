@@ -191,6 +191,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             AggregateWorkspaceProjectContext previousContextToDispose = null;
             return await ExecuteWithinLockAsync(async () =>
             {
+                await _commonServices.ThreadingService.SwitchToUIThread();
+
                 string newTargetFramework = null;
                 var projectProperties = await _commonServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync().ConfigureAwait(false);
 
