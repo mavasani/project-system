@@ -110,6 +110,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await UpdateProjectContextAndSubscriptionsAsync().ConfigureAwait(false);
         }
 
+        Task ILanguageServiceHost.InitializeAsync(CancellationToken cancellationToken)
+        {
+            return InitializeAsync(cancellationToken);
+        }
+
         private async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e, RuleHandlerType handlerType)
         {
             if (IsDisposing || IsDisposed)
