@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
             if (launchSettingsNative.Length == 0)
             {
-                return Task.FromResult<IReadOnlyList<VsDebugTargetProcessInfo>>(new VsDebugTargetProcessInfo[0]);
+                return Task.FromResult<IReadOnlyList<VsDebugTargetProcessInfo>>(Array.Empty<VsDebugTargetProcessInfo>());
             }
 
             try
